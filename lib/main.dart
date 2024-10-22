@@ -18,10 +18,13 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'SafeDrive Login',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: UploadPhotoPage(),
+      initialRoute: '/',
+      routes: {
+        // Se definen las rutas de la aplicación
+        '/': (context) => LoginPage(), // Ruta inicial
+        '/register': (context) => RegisterPage(),
+        '/upload_photo': (context) => UploadPhotoPage(),
+      },
     );
   }
 }

@@ -86,8 +86,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
+                      // Lógica para dirigir a la siguiente pantalla
                       if (_formKey.currentState!.validate() && _agreeToTerms) {
-                        // Lógica para registrar
+                        Navigator.pushNamed(context, '/upload_photo');
                       }
                     },
                     style: ElevatedButton.styleFrom(
