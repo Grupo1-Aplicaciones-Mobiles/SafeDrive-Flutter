@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "470109530015",
+    "project_id": "safedriveapp-b5a1c",
+    "storage_bucket": "safedriveapp-b5a1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470109530015:android:40082eb9d9cbdfce563faa",
+        "android_client_info": {
+          "package_name": "com.example.safedrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6SNwLuNeFf92sy-mz1BFbRS5cv2HxY_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470109530015:android:a6f573aeee1c3822563faa",
+        "android_client_info": {
+          "package_name": "com.safedrive.storage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6SNwLuNeFf92sy-mz1BFbRS5cv2HxY_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470109530015:android:b37cff24a23351cc563faa",
+        "android_client_info": {
+          "package_name": "upc.edu.safedrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6SNwLuNeFf92sy-mz1BFbRS5cv2HxY_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
