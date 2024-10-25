@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:safedrive/login_screen.dart';
-import 'package:safedrive/register_screen.dart';
-import 'package:safedrive/upload_photo_screen.dart';
+import 'package:safedrive/feature/register_and_login/presentation/pages/login_page.dart';
+import 'package:safedrive/feature/register_and_login/presentation/pages/register_page.dart';
+import 'package:safedrive/feature/register_and_login/presentation/pages/upload_photo_page.dart';
 // import 'package:getwidget/getwidget.dart';
 
 void main() {

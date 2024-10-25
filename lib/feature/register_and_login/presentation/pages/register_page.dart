@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:safedrive/feature/register_and_login/data/remote/user_service.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -85,10 +86,30 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      final username = _nameController.text;
+                      final email = _emailController.text;
+                      final mobile = _mobileController.text;
+                      final password = _passwordController.text;
                       // Lógica para dirigir a la siguiente pantalla
                       if (_formKey.currentState!.validate() && _agreeToTerms) {
-                        Navigator.pushNamed(context, '/upload_photo');
+                        final registerMessage = await registerUser(
+                            username, email, mobile, password);
+                        // Muestra un mensaje según el resultado del registro
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(registerMessage)),
+                        );
+                        // Si el registro es exitoso, redirige al usuario al login
+                        if (registerMessage ==
+                            "Usuario registrado exitosamente") {
+                          Navigator.pushNamed(context, '/upload_photo');
+                        }
+                      } else if (!_agreeToTerms) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  'Debe aceptar los términos y condiciones')),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
