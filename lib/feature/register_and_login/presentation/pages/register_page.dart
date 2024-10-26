@@ -102,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         // Si el registro es exitoso, redirige al usuario al login
                         if (registerMessage ==
                             "Usuario registrado exitosamente") {
-                          Navigator.pushNamed(context, '/upload_photo');
+                          Navigator.pushNamed(context, '/login');
                         }
                       } else if (!_agreeToTerms) {
                         ScaffoldMessenger.of(context).showSnackBar(

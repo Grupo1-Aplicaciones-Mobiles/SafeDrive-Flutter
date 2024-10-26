@@ -7,7 +7,8 @@ import 'package:safedrive/features/notification/data/remote/notification_model.d
 class NotificationService {
   Future<List<NotificationModel>> getNotifications() async {
     try {
-      final url = Uri.parse('${AppConstants.baseUrl}${AppConstants.notifications}');
+      final url = Uri.parse(
+          '${AppConstants.notificationsUrl}${AppConstants.notifications}');
       http.Response response = await http.get(url);
 
       print('Status: ${response.statusCode}');

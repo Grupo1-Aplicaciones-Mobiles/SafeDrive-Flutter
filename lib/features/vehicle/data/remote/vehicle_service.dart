@@ -7,7 +7,8 @@ import 'package:safedrive/features/vehicle/data/remote/vehicle_model.dart';
 class VehicleService {
   Future<List<VehicleModel>> getVehicles() async {
     try {
-      final url = Uri.parse('${AppConstants.baseUrl}${AppConstants.vehicles}');
+      final url =
+          Uri.parse('${AppConstants.vehiclesUrl}${AppConstants.vehicles}');
       http.Response response = await http.get(url);
 
       print('Response status: ${response.statusCode}');
@@ -25,7 +26,8 @@ class VehicleService {
 
   Future<bool> postVehicle(VehicleModel vehicle) async {
     try {
-      final url = Uri.parse('${AppConstants.baseUrl}${AppConstants.vehicles}');
+      final url =
+          Uri.parse('${AppConstants.vehiclesUrl}${AppConstants.vehicles}');
       final response = await http.post(
         url,
         headers: {

@@ -78,8 +78,8 @@ class LoginPage extends StatelessWidget {
 
                         // Si el login es exitoso, redirige al usuario
                         if (loginMessage == "Login exitoso") {
-                          Navigator.pushNamed(context,
-                              '/register'); // Redirigir a la pantalla de inicio
+                          Navigator.pushReplacementNamed(context,
+                              '/home'); // Redirigir a la pantalla de inicio
                         }
                       }
                     },
