@@ -17,7 +17,6 @@ class _SafeDriveAppState extends State<SafeDriveApp> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Text('Tracking'), // Página de rastreo
     const VehicleListPage(), // Página de lista de vehículos
-    const AddVehiclePage(), // Página para agregar vehículos
     const NotificationListPage(), // Página de notificaciones
     const ProfilePage() // Página de perfil
   ];
@@ -41,10 +40,6 @@ class _SafeDriveAppState extends State<SafeDriveApp> {
           BottomNavigationBarItem(
             icon: Icon(Icons.directions_car),
             label: 'Vehicles',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add Vehicle',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),

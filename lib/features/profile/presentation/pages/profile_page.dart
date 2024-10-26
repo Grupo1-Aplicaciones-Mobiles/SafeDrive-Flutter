@@ -53,7 +53,7 @@ class ProfilePage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
               ),
-              child: Text('Actualizar Información'),
+              child: const Text('Actualizar Información', style: TextStyle(color: Colors.black),),
             ),
             SizedBox(height: 8),
             OutlinedButton(
@@ -68,7 +68,7 @@ class ProfilePage extends StatelessWidget {
             SizedBox(height: 8),
             OutlinedButton(
               onPressed: () {
-                // Logica para borrar cuenta
+                Navigator.pushReplacementNamed(context, '/login');
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.red,

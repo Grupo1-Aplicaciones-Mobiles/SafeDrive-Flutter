@@ -48,7 +48,7 @@ class EditProfilePage extends StatelessWidget {
                   backgroundColor: Colors.deepPurple,
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                child: Text('Guardar'),
+                child: const Text('Guardar', style: TextStyle(color: Colors.black),),
               ),
             ),
           ],
