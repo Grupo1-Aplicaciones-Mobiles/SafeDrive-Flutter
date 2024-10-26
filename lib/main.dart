@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:safedrive/features/notification/presentation/pages/notification_list_page.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/login_page.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/register_page.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/upload_photo_page.dart';
