@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/login_page.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/register_page.dart';
 import 'package:safedrive/features/notification/presentation/pages/notification_list_page.dart';
+import 'package:safedrive/features/profile/presentation/pages/edit_profile_page.dart';
+import 'package:safedrive/features/profile/presentation/pages/profile_page.dart';
 import 'package:safedrive/features/vehicle/presentation/pages/add_vehicle_page.dart';
 import 'package:safedrive/features/vehicle/presentation/pages/vehicle_list_page.dart';
 import 'package:safedrive/safedrive_app.dart';
@@ -32,6 +34,8 @@ class MainApp extends StatelessWidget {
         '/vehicle_list': (context) => const VehicleListPage(),
         '/add_vehicle': (context) => const AddVehiclePage(),
         '/notifications': (context) => const NotificationListPage(),
+        '/profile': (context) => const ProfilePage(),
+        '/edit_profile': (context) => const EditProfilePage(),
         '/home': (context) =>
             const SafeDriveApp(), // Ruta para la barra de navegación
       },

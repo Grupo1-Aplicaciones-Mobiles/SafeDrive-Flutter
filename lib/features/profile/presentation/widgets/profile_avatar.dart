@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProfileAvatar extends StatelessWidget {
   final bool showEditIcon;
 
-  const ProfileAvatar({Key? key, this.showEditIcon = false}) : super(key: key);
+  const ProfileAvatar({super.key, this.showEditIcon = false});
 
   @override
   Widget build(BuildContext context) {
