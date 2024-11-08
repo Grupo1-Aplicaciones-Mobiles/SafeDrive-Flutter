@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:safedrive/features/vehicle/data/remote/vehicle_model.dart';
 import 'package:safedrive/features/vehicle/data/remote/vehicle_service.dart';
