@@ -10,12 +10,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
+  int _selectedIndex = 0;
 
   final LatLng _center =
       const LatLng(37.7749, -122.4194); // Coordenadas de San Francisco
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/tracking');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/avisos');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/cuenta');
+        break;
+    }
   }
 
   @override
@@ -30,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Encabezado
             Container(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               color: Colors.white,
               child: Row(
                 children: [
@@ -63,6 +85,9 @@ class _HomePageState extends State<HomePage> {
                   target: _center,
                   zoom: 12.0,
                 ),
+                onTap: (LatLng position) {
+                  Navigator.pushNamed(context, '/tracking');
+                },
               ),
             ),
             // Sección de Vehículos
@@ -86,6 +111,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               height: 110,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              color: Colors.white,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -96,6 +122,62 @@ class _HomePageState extends State<HomePage> {
                   VehicleCard(
                       image: 'assets/img/SafeDrive_Logo.png',
                       name: 'BMW Mayuko'),
+                  VehicleCard(
+                      image: 'assets/img/SafeDrive_Logo.png',
+                      name: 'BMW Mayuko'),
+                  VehicleCard(
+                      image: 'assets/img/SafeDrive_Logo.png',
+                      name: 'BMW Mayuko'),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Noticias Y Tips:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                    onPressed: () {}, // Añadir acción para ver todos
+                    child: Text('Ver Todos'),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/img/SafeDrive_Logo.png', // Reemplaza con la ruta de tu imagen de icono
+                        height: 115,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Loreme Ipsum Dolor Sit Amet Consectetur  Elit Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua Loreme Ipsum Dolor Sit Amet Consectetur  Elit Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua',
+                              style: TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.justify,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -103,12 +185,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _selectedIndex,
         type: BottomNavigationBarType
             .fixed, // Asegura que se muestre correctamente en todos los dispositivos
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
         iconSize: 35,
+        onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(

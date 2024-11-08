@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:safedrive/features/home/presentation/pages/home_page.dart';
@@ -15,9 +15,17 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: HomePage(),
-      ),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        // Se definen las rutas de la aplicación
+        '/': (context) => HomePage(), // Ruta inicial
+        '/home': (context) => HomePage(), // Ruta inicial
+        '/tracking': (context) => TrackingPage(),
+      },
+      // home: Scaffold(
+      //   body: HomePage(),
+      // ),
     );
   }
 }
