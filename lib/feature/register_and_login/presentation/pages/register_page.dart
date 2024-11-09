@@ -14,9 +14,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // Controladores para los campos de texto
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
@@ -54,10 +55,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   _buildTextField(
                       'Name', _nameController, 'Please enter your name'),
                   SizedBox(height: 10),
-                  _buildTextField('Email Address', _emailController,
-                      'Please enter your email address'),
+                  _buildTextField('Username', _usernameController,
+                      'Please enter your username address'),
                   SizedBox(height: 10),
-                  _buildTextField('Mobile Number', _mobileController,
+                  _buildTextField('Mobile Number', _phoneNumberController,
                       'Please enter your mobile number'),
                   SizedBox(height: 10),
                   _buildPasswordField('Password', _passwordController,
@@ -87,21 +88,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      final username = _nameController.text;
-                      final email = _emailController.text;
-                      final mobile = _mobileController.text;
+                      final name = _nameController.text;
+                      final username = _usernameController.text;
+                      final mobile = _phoneNumberController.text;
                       final password = _passwordController.text;
+
                       // Lógica para dirigir a la siguiente pantalla
                       if (_formKey.currentState!.validate() && _agreeToTerms) {
                         final registerMessage = await registerUser(
-                            username, email, mobile, password);
+                            name, username, password, mobile);
                         // Muestra un mensaje según el resultado del registro
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(registerMessage)),
                         );
                         // Si el registro es exitoso, redirige al usuario al login
                         if (registerMessage ==
-                            "Usuario registrado exitosamente") {
+                            "Usuario registrado exitosamente.") {
                           Navigator.pushNamed(context, '/login');
                         }
                       } else if (!_agreeToTerms) {
