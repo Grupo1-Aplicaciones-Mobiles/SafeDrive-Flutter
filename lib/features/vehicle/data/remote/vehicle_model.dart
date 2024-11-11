@@ -5,6 +5,8 @@ class VehicleModel {
   final String color;
   final String placa;
   final String imageUri;
+  final double latitude;
+  final double longitude;
 
   VehicleModel(
       {this.id,
@@ -12,7 +14,9 @@ class VehicleModel {
       required this.modelo,
       required this.color,
       required this.placa,
-      required this.imageUri});
+      required this.imageUri,
+      required this.latitude,
+      required this.longitude});
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) {
     return VehicleModel(
@@ -21,7 +25,9 @@ class VehicleModel {
       modelo: json['modelo'] ?? '',
       color: json['color'] ?? '',
       placa: json['placa'] ?? '',
-      imageUri: json['imagen'] ?? '',
+      latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
+      longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+      imageUri: json['imageUri'] ?? '',
     );
   }
 
@@ -31,7 +37,9 @@ class VehicleModel {
       'modelo': modelo,
       'color': color,
       'placa': placa,
-      'imagen': imageUri,
+      'latitude': latitude,
+      'longitude': longitude,
+      'imageUri': imageUri,
     };
   }
 }

@@ -12,6 +12,7 @@ class _TrackingPageState extends State<TrackingPage> {
   GoogleMapController? mapController;
   List<VehicleModel> vehicles = [];
   VehicleModel? selectedVehicle;
+  Set<Marker> markers = {};
 
   @override
   void initState() {
@@ -22,13 +23,35 @@ class _TrackingPageState extends State<TrackingPage> {
   Future<void> fetchVehicles() async {
     VehicleService vehicleService = VehicleService();
     List<VehicleModel> vehicleList = await vehicleService.getVehicles();
-    setState((){
+    setState(() {
       vehicles = vehicleList;
     });
   }
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  void moveCameraToVehicleLocation(VehicleModel vehicle) {
+    final LatLng vehiclePosition = LatLng(vehicle.latitude, vehicle.longitude);
+
+    // Mueve la cámara a la ubicación del vehículo
+    mapController?.animateCamera(CameraUpdate.newLatLng(vehiclePosition));
+
+    // Actualiza el marcador en el mapa
+    setState(() {
+      markers = {
+        Marker(
+          markerId: MarkerId(vehicle.placa), // Usa la placa como ID único
+          position: vehiclePosition,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          infoWindow: InfoWindow( // Mostrar información del vehículo al precionar el marcador
+            title: "${vehicle.marca} ${vehicle.modelo}",
+            snippet: "Placa: ${vehicle.placa}",
+          ),
+        ),
+      };
+    });
   }
 
   @override
@@ -44,12 +67,13 @@ class _TrackingPageState extends State<TrackingPage> {
             child: GoogleMap(
               onMapCreated: onMapCreated,
               initialCameraPosition: CameraPosition(
-                target: LatLng(-12.200674, -77.00322),
+                target: LatLng(-12.200674, -77.00322), // Pronto se pondrá la ubicacion del usuario
                 zoom: 15,
               ),
+              markers: markers,
             ),
           ),
-          // Sleccion y detalles
+          // Selección y detalles
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -63,17 +87,21 @@ class _TrackingPageState extends State<TrackingPage> {
                     setState(() {
                       selectedVehicle = newValue;
                     });
+                    if (newValue != null) {
+                      moveCameraToVehicleLocation(newValue);
+                    }
                   },
                   items: vehicles.map<DropdownMenuItem<VehicleModel>>((VehicleModel vehicle) {
                     return DropdownMenuItem<VehicleModel>(
                       value: vehicle,
-                      child: Text(vehicle.marca + ' - ' + vehicle.modelo),
+                      child: Text('${vehicle.marca} - ${vehicle.modelo}'),
                     );
                   }).toList(),
                 ),
                 SizedBox(height: 10),
                 Text("Ubicación: ", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(selectedVehicle != null ? "Latitud: ... Longitud: ..." : "Seleccione un vehículo"),
+                Text(selectedVehicle != null
+                    ? "Lat: ${selectedVehicle!.latitude}, Lon: ${selectedVehicle!.longitude}" : "Seleccione un vehículo"),
                 SizedBox(height: 10),
                 Text("Estado:", style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(selectedVehicle != null ? "Activo" : "Seleccione un vehículo"),
@@ -83,8 +111,8 @@ class _TrackingPageState extends State<TrackingPage> {
               ],
             ),
           )
-        ]
-      )
+        ],
+      ),
     );
   }
 }
