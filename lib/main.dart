@@ -13,7 +13,6 @@ import 'package:safedrive/features/vehicle/presentation/pages/add_vehicle_page.d
 import 'package:safedrive/features/vehicle/presentation/pages/vehicle_list_page.dart';
 import 'package:safedrive/safedrive_app.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -26,14 +25,6 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-      home: Scaffold(
-        body: TrackingPage(),
-
-      title: 'SafeDrive App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: LoginPage(), // Asegúrate de que la página de inicio sea LoginPage
       routes: {
         '/login': (context) => LoginPage(),

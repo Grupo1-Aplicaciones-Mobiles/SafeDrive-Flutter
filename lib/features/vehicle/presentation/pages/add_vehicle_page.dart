@@ -23,8 +23,6 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
 
-
-
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -58,8 +56,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
       }
 
       final double latitude = double.tryParse(_latitudeController.text) ?? 0.0;
-      final double longitude = double.tryParse(_longitudeController.text) ?? 0.0;
-
+      final double longitude =
+          double.tryParse(_longitudeController.text) ?? 0.0;
 
       if (imageUrl != null) {
         VehicleModel newVehicle = VehicleModel(
@@ -78,8 +76,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Vehículo agregado')),
           );
-          Navigator.pop(context,
-              true); 
+          Navigator.pop(context, true);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error al agregar vehículo')),
