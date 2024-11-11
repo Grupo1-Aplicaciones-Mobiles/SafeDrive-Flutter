@@ -23,6 +23,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
 
+
+
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -77,7 +79,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
             SnackBar(content: Text('Vehículo agregado')),
           );
           Navigator.pop(context,
-              true); // Devuelve true si el vehículo se agregó correctamente
+              true); 
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error al agregar vehículo')),

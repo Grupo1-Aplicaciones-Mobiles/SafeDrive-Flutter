@@ -17,6 +17,8 @@ class VehicleModel {
       required this.imageUri,
       required this.latitude,
       required this.longitude});
+      required this.imageUri});
+
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) {
     return VehicleModel(
@@ -25,9 +27,9 @@ class VehicleModel {
       modelo: json['modelo'] ?? '',
       color: json['color'] ?? '',
       placa: json['placa'] ?? '',
-      imageUri: json['imagen'] ?? '',
       latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
       longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+      imageUri: json['imageUri'] ?? '',
     );
   }
 
@@ -37,9 +39,9 @@ class VehicleModel {
       'modelo': modelo,
       'color': color,
       'placa': placa,
-      'imagen': imageUri,
       'latitude': latitude,
       'longitude': longitude,
+      'imageUri': imageUri,
     };
   }
 }
