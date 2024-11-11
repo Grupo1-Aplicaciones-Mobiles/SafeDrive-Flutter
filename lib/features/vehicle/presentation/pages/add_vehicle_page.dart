@@ -20,6 +20,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   final _placaController = TextEditingController();
   final _colorController = TextEditingController();
   File? _image;
+  final _latitudeController = TextEditingController();
+  final _longitudeController = TextEditingController();
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -53,6 +55,10 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         imageUrl = await _uploadImage(_image!);
       }
 
+      final double latitude = double.tryParse(_latitudeController.text) ?? 0.0;
+      final double longitude = double.tryParse(_longitudeController.text) ?? 0.0;
+
+
       if (imageUrl != null) {
         VehicleModel newVehicle = VehicleModel(
           marca: _marcaController.text,
@@ -60,6 +66,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           placa: _placaController.text,
           color: _colorController.text,
           imageUri: imageUrl,
+          latitude: latitude,
+          longitude: longitude,
         );
 
         bool success = await VehicleService().postVehicle(newVehicle);
@@ -89,6 +97,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     _modeloController.dispose();
     _placaController.dispose();
     _colorController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
     super.dispose();
   }
 
