@@ -21,7 +21,7 @@ class VehicleModel {
       modelo: json['modelo'] ?? '',
       color: json['color'] ?? '',
       placa: json['placa'] ?? '',
-      imageUri: json['imagen'] ?? '',
+      imageUri: json['imageUri'] ?? '',
     );
   }
 
@@ -31,7 +31,7 @@ class VehicleModel {
       'modelo': modelo,
       'color': color,
       'placa': placa,
-      'imagen': imageUri,
+      'imageUri': imageUri,
     };
   }
 }

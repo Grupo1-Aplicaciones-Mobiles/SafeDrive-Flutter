@@ -5,7 +5,7 @@ import 'package:safedrive/features/vehicle/presentation/pages/vehicle_list_page.
 import 'package:safedrive/features/vehicle/presentation/pages/add_vehicle_page.dart';
 
 class SafeDriveApp extends StatefulWidget {
-  const SafeDriveApp({Key? key}) : super(key: key);
+  const SafeDriveApp({super.key});
 
   @override
   _SafeDriveAppState createState() => _SafeDriveAppState();
