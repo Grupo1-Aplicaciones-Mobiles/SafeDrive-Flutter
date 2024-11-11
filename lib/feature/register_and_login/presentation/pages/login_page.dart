@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
 
                       if (_formKey.currentState!.validate()) {
                         final loginMessage =
-                            await loginUser(username, password);
+                            await loginUser(username, password, context);
                         // Mostrar un mensaje en pantalla según el resultado
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(loginMessage)),

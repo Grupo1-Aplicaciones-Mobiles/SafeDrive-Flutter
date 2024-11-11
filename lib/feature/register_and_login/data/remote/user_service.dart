@@ -1,75 +1,89 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Endpoint base
-final Uri baseUrl =
-    Uri.parse('https://671bc4d72c842d92c3813d71.mockapi.io/api/v1/users');
+final Uri signUpUrl = Uri.parse(
+    'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/authentication/sign-up');
+final Uri signInUrl = Uri.parse(
+    'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/authentication/sign-in');
 
-// Función para registrar un usuario
 Future<String> registerUser(
-    String username, String email, String mobile, String password) async {
-  try {
-    // Verificar si el usuario ya existe
-    final existingUsersResponse = await http.get(baseUrl);
-    if (existingUsersResponse.statusCode == 200) {
-      final List<dynamic> users = json.decode(existingUsersResponse.body);
-      final userExists = users.any(
-          (user) => user['username'] == username || user['email'] == email);
-      if (userExists) {
-        return "El usuario o email ya están en uso.";
-      }
-    }
+    String name, String username, String password, String phoneNumber) async {
+  final requestData = {
+    'name': name,
+    'username': username,
+    'password': password,
+    'phoneNumber': phoneNumber,
+    'roles': ['ROLE_ADMIN']
+  };
 
-    // Registrar nuevo usuario
+  final headers = {"Content-Type": "application/json"};
+
+  // Imprimir los datos que se enviarán al servidor
+  print('Datos de registro: ${json.encode(requestData)}');
+  print('Encabezados: $headers');
+  print('URL de registro: $signUpUrl');
+
+  try {
     final response = await http.post(
-      baseUrl,
-      headers: {"Content-Type": "application/json"},
-      body: json.encode({
-        "username": username,
-        "email": email,
-        "mobile_number": mobile,
-        "password": password
-      }),
+      signUpUrl,
+      headers: headers,
+      body: json.encode(requestData),
     );
 
     if (response.statusCode == 201) {
-      return "Usuario registrado exitosamente";
+      return "Usuario registrado exitosamente.";
     } else {
-      return "Error en el registro. Intente nuevamente.";
+      if (response.body.isNotEmpty) {
+        final errorResponse = json.decode(response.body);
+        final errorMessage = errorResponse['message'] ?? 'Error desconocido';
+        print('Error al registrar usuario: $errorMessage');
+        return "Error al registrar usuario: $errorMessage";
+      } else {
+        print(
+            'Error al registrar usuario: Código de estado ${response.statusCode}');
+        return "Error al registrar usuario: Código de estado ${response.statusCode}";
+      }
     }
   } catch (e) {
-    print("Error en el registro: $e");
-    return "Error al registrar. Verifique la conexión.";
+    print('Error de conexión: $e');
+    return "Error de conexión: $e";
   }
 }
 
-// Función para iniciar sesión
-Future<String> loginUser(String username, String password) async {
+Future<String> loginUser(
+    String username, String password, BuildContext context) async {
   try {
-    final response = await http.get(baseUrl);
+    final response = await http.post(
+      signInUrl,
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
+        'username': username,
+        'password': password,
+      }),
+    );
 
     if (response.statusCode == 200) {
-      final List<dynamic> users = json.decode(response.body);
+      final data = json.decode(response.body);
+      final token = data['token'];
 
-      // Validación de usuario y contraseña
-      final user = users.firstWhere(
-        (user) => user['username'] == username && user['password'] == password,
-        orElse: () => null,
-      );
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('jwt_token', token);
 
-      // Verificación de usuario nulo
-      if (user != null) {
-        return "Login exitoso";
-      } else {
-        return "Usuario o contraseña incorrectos";
-      }
+      Navigator.pushReplacementNamed(context, '/home');
+
+      print('Response body: ${response.body}');
+      return "Inicio de sesión exitoso.";
     } else {
-      return "Error en la petición. Intente nuevamente.";
+      return "Error al iniciar sesión: ${response.body}";
     }
   } catch (e) {
-    print("Error en el login: $e");
-    return "Error en el login. Verifique la conexión.";
+    return "Error de conexión: $e";
   }
+}
+
+Future<bool> isLoggedIn() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.containsKey('jwt_token');
 }
