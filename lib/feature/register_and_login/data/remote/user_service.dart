@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 final Uri signUpUrl = Uri.parse(
     'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/authentication/sign-up');
 final Uri signInUrl = Uri.parse(
     'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/authentication/sign-in');
-
 
 Future<String> registerUser(
     String name, String username, String password, String phoneNumber) async {
@@ -17,7 +15,7 @@ Future<String> registerUser(
     'username': username,
     'password': password,
     'phoneNumber': phoneNumber,
-    'roles': ['ROLE_MEMBER']
+    'roles': ['ROLE_ADMIN']
   };
 
   final headers = {"Content-Type": "application/json"};
@@ -43,7 +41,8 @@ Future<String> registerUser(
         print('Error al registrar usuario: $errorMessage');
         return "Error al registrar usuario: $errorMessage";
       } else {
-        print('Error al registrar usuario: Código de estado ${response.statusCode}');
+        print(
+            'Error al registrar usuario: Código de estado ${response.statusCode}');
         return "Error al registrar usuario: Código de estado ${response.statusCode}";
       }
     }
@@ -72,7 +71,6 @@ Future<String> loginUser(
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwt_token', token);
 
-      
       Navigator.pushReplacementNamed(context, '/home');
 
       print('Response body: ${response.body}');
