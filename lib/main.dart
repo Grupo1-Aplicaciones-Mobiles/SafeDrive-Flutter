@@ -27,15 +27,6 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      routes: {
-        // Se definen las rutas de la aplicación
-        '/': (context) => HomePage(), // Ruta inicial
-        '/home': (context) => HomePage(), // Ruta inicial
-        '/tracking': (context) => TrackingPage(),
-      },
-      // home: Scaffold(
-      //   body: HomePage(),
-      // ),
       home: LoginPage(), // Asegúrate de que la página de inicio sea LoginPage
       routes: {
         '/login': (context) => LoginPage(),
