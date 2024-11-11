@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:safedrive/features/tracking/presentation/pages/tracking_page.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/login_page.dart';
 import 'package:safedrive/feature/register_and_login/presentation/pages/register_page.dart';
@@ -10,6 +12,7 @@ import 'package:safedrive/features/profile/presentation/pages/profile_page.dart'
 import 'package:safedrive/features/vehicle/presentation/pages/add_vehicle_page.dart';
 import 'package:safedrive/features/vehicle/presentation/pages/vehicle_list_page.dart';
 import 'package:safedrive/safedrive_app.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +26,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+      home: Scaffold(
+        body: TrackingPage(),
+
       title: 'SafeDrive App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
