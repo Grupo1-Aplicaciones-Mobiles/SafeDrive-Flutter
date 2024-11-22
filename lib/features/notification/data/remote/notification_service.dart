@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:safedrive/core/app_constants.dart';
 import 'package:safedrive/features/notification/data/remote/notification_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   Future<List<NotificationModel>> getNotifications() async {
     try {
       String? token = await getToken();
+      int? userId = await getUserId();
 
-      if (token != null) {
-        final url = Uri.parse('${AppConstants.baseURL}/notifications');
+      if (token != null && userId != null) {
+        final url = Uri.parse('${AppConstants.baseURL}/notifications/user/$userId');
         http.Response response = await http.get(
           url,
           headers: {
@@ -28,9 +29,11 @@ class NotificationService {
           return json.map((map) => NotificationModel.fromJson(map)).toList();
         } else if (response.statusCode == HttpStatus.unauthorized) {
           print('Error 401: No autorizado');
+        } else {
+          print('Error ${response.statusCode}: ${response.reasonPhrase}');
         }
       } else {
-        print('Token no encontrado. Por favor, inicia sesión.');
+        print('Token o userId no encontrados. Por favor, inicia sesión.');
       }
     } catch (e) {
       print('Error: $e');
@@ -41,5 +44,10 @@ class NotificationService {
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('jwt_token');
+  }
+
+  Future<int?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
   }
 }

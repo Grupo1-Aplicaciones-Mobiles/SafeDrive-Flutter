@@ -13,7 +13,7 @@ class NotificationModel {
     return NotificationModel(
       id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
       message: json['message'] ?? '',
-      dateTime: DateTime.fromMillisecondsSinceEpoch(json['dateTime'] * 1000),
+      dateTime: DateTime.parse(json['dateTime']),
     );
   }
 
@@ -21,7 +21,7 @@ class NotificationModel {
     return {
       'id': id,
       'message': message,
-      'dateTime': dateTime.millisecondsSinceEpoch,
+      'dateTime': dateTime.toIso8601String(),
     };
   }
 }

@@ -17,8 +17,6 @@ class VehicleModel {
       required this.imageUri,
       required this.latitude,
       required this.longitude});
-      required this.imageUri});
-
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) {
     return VehicleModel(

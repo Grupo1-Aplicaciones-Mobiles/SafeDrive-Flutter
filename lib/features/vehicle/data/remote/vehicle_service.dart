@@ -8,16 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class VehicleService {
   Future<List<VehicleModel>> getVehicles() async {
     try {
-      final url =
-          Uri.parse('${AppConstants.vehiclesUrl}${AppConstants.vehicles}');
-      http.Response response = await http.get(url);
-
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
-      if (response.statusCode == HttpStatus.ok) {
-        List<dynamic> json = jsonDecode(response.body);
-        return json.map((map) => VehicleModel.fromJson(map)).toList();
       String? token = await getToken();
 
       if (token != null) {
@@ -50,35 +40,14 @@ class VehicleService {
 
   Future<bool> postVehicle(VehicleModel vehicle) async {
     try {
-      final url =
-          Uri.parse('${AppConstants.vehiclesUrl}${AppConstants.vehicles}');
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(vehicle.toJson()),
-      );
-
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
-      return response.statusCode == HttpStatus.created;
-    } catch (e) {
-      print('Error posting vehicle: $e');
-      return false;
-    }
-      
       String? token = await getToken();
 
       if (token != null) {
         print('Token: $token');
-        
 
         final url = Uri.parse('${AppConstants.baseURL}/vehicles');
         print('URL: $url');
 
-        
         final requestBody = jsonEncode(vehicle.toJson());
         print('Request body: $requestBody');
 
