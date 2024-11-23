@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:safedrive/features/home/presentation/pages/home_page.dart';
 import 'package:safedrive/features/notification/presentation/pages/notification_list_page.dart';
 import 'package:safedrive/features/profile/presentation/pages/profile_page.dart';
+import 'package:safedrive/features/tracking/presentation/pages/tracking_page.dart';
 import 'package:safedrive/features/vehicle/presentation/pages/vehicle_list_page.dart';
 import 'package:safedrive/features/vehicle/presentation/pages/add_vehicle_page.dart';
 
@@ -15,7 +17,8 @@ class _SafeDriveAppState extends State<SafeDriveApp> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const Text('Tracking'), // Página de rastreo
+    HomePage(), // Página de inicio
+    TrackingPage(), // Página de rastreo
     const VehicleListPage(), // Página de lista de vehículos
     const NotificationListPage(), // Página de notificaciones
     const ProfilePage() // Página de perfil
@@ -33,6 +36,7 @@ class _SafeDriveAppState extends State<SafeDriveApp> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.add_home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_location),
             label: 'Tracking',
