@@ -45,7 +45,8 @@ class _TrackingPageState extends State<TrackingPage> {
           markerId: MarkerId(vehicle.placa), // Usa la placa como ID único
           position: vehiclePosition,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          infoWindow: InfoWindow( // Mostrar información del vehículo al precionar el marcador
+          infoWindow: InfoWindow(
+            // Mostrar información del vehículo al precionar el marcador
             title: "${vehicle.marca} ${vehicle.modelo}",
             snippet: "Placa: ${vehicle.placa}",
           ),
@@ -67,7 +68,8 @@ class _TrackingPageState extends State<TrackingPage> {
             child: GoogleMap(
               onMapCreated: onMapCreated,
               initialCameraPosition: CameraPosition(
-                target: LatLng(-12.200674, -77.00322), // Pronto se pondrá la ubicacion del usuario
+                target: LatLng(-12.200674,
+                    -77.00322), // Pronto se pondrá la ubicacion del usuario
                 zoom: 15,
               ),
               markers: markers,
@@ -79,7 +81,8 @@ class _TrackingPageState extends State<TrackingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Selecciona un vehiculo:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Selecciona un vehiculo:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 DropdownButton<VehicleModel>(
                   value: selectedVehicle,
                   hint: Text('Selecciona vehiculo'),
@@ -91,7 +94,8 @@ class _TrackingPageState extends State<TrackingPage> {
                       moveCameraToVehicleLocation(newValue);
                     }
                   },
-                  items: vehicles.map<DropdownMenuItem<VehicleModel>>((VehicleModel vehicle) {
+                  items: vehicles.map<DropdownMenuItem<VehicleModel>>(
+                      (VehicleModel vehicle) {
                     return DropdownMenuItem<VehicleModel>(
                       value: vehicle,
                       child: Text('${vehicle.marca} - ${vehicle.modelo}'),
@@ -99,15 +103,21 @@ class _TrackingPageState extends State<TrackingPage> {
                   }).toList(),
                 ),
                 SizedBox(height: 10),
-                Text("Ubicación: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Ubicación: ",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(selectedVehicle != null
-                    ? "Lat: ${selectedVehicle!.latitude}, Lon: ${selectedVehicle!.longitude}" : "Seleccione un vehículo"),
+                    ? "Lat: ${selectedVehicle!.latitude}, Lon: ${selectedVehicle!.longitude}"
+                    : "Seleccione un vehículo"),
                 SizedBox(height: 10),
                 Text("Estado:", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(selectedVehicle != null ? "Activo" : "Seleccione un vehículo"),
+                Text(selectedVehicle != null
+                    ? "Activo"
+                    : "Seleccione un vehículo"),
                 SizedBox(height: 10),
-                Text("Distancia (Km):", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(selectedVehicle != null ? "0.0" : "Seleccione un vehículo"),
+                Text("Distancia (Km):",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                    selectedVehicle != null ? "0.0" : "Seleccione un vehículo"),
               ],
             ),
           )

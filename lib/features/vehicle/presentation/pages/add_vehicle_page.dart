@@ -55,20 +55,15 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         imageUrl = await _uploadImage(_image!);
       }
 
-      final double latitude = double.tryParse(_latitudeController.text) ?? 0.0;
-      final double longitude =
-          double.tryParse(_longitudeController.text) ?? 0.0;
-
       if (imageUrl != null) {
         VehicleModel newVehicle = VehicleModel(
-          marca: _marcaController.text,
-          modelo: _modeloController.text,
-          placa: _placaController.text,
-          color: _colorController.text,
-          imageUri: imageUrl,
-          latitude: latitude,
-          longitude: longitude,
-        );
+            marca: _marcaController.text,
+            modelo: _modeloController.text,
+            placa: _placaController.text,
+            color: _colorController.text,
+            imageUri: imageUrl,
+            latitude: 0,
+            longitude: 0);
 
         bool success = await VehicleService().postVehicle(newVehicle);
 

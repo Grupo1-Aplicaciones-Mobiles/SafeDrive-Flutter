@@ -28,27 +28,6 @@ class _HomePageState extends State<HomePage> {
     mapController = controller;
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/tracking');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/avisos');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/cuenta');
-        break;
-    }
-  }
-
   Future<void> fetchTipsData() async {
     try {
       List<TipAuto> fetchedTips = await fetchTips();
@@ -208,23 +187,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType
-            .fixed, // Asegura que se muestre correctamente en todos los dispositivos
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        iconSize: 35,
-        onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.gps_fixed), label: 'Rastreo'),
-          BottomNavigationBarItem(icon: Icon(Icons.warning), label: 'Avisos'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: 'Cuenta'),
-        ],
       ),
     );
   }

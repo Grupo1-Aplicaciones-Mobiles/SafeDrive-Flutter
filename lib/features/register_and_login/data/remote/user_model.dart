@@ -18,7 +18,8 @@ class UserModel {
       id: json['id'] ?? '',
       username: json['username'] ?? '',
       email: json['email'] ?? '',
-      mobileNumber: json['mobile_number'].toString(), // Convertimos a String en caso de que sea int
+      mobileNumber: json['mobile_number']
+          .toString(), // Convertimos a String en caso de que sea int
       password: json['password'] ?? '',
     );
   }

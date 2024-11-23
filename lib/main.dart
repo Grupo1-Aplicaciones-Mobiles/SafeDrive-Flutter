@@ -27,9 +27,6 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      // home: Scaffold(
-      //   body: HomePage(),
-      // ),
       home: LoginPage(), // Asegúrate de que la página de inicio sea LoginPage
       routes: {
         '/login': (context) => LoginPage(),
@@ -39,7 +36,7 @@ class MainApp extends StatelessWidget {
         '/notifications': (context) => const NotificationListPage(),
         '/profile': (context) => const ProfilePage(),
         '/edit_profile': (context) => const EditProfilePage(),
-        '/home': (context) => HomePage(), // Ruta para la barra de navegación
+        '/home': (context) => const SafeDriveApp(), // Ruta para la barra de navegación
       },
     );
   }
