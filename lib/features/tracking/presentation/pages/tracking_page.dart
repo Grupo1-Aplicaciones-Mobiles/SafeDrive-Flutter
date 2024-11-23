@@ -60,6 +60,7 @@ class _TrackingPageState extends State<TrackingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rastrear'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Column(
         children: [

@@ -99,6 +99,10 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Añadir vehículos'),
+        backgroundColor: Colors.deepPurple,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -108,25 +112,6 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Text(
-                        'Agregar Vehículo',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                          width:
-                              48), // Espacio para alinear el título en el centro
-                    ],
-                  ),
                   SizedBox(height: 16),
                   TextFormField(
                     controller: _marcaController,

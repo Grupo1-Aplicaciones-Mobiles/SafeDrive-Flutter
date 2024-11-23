@@ -34,6 +34,10 @@ class _VehicleListPageState extends State<VehicleListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Vehículos'),
+        backgroundColor: Colors.deepPurple,
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,10 +47,6 @@ class _VehicleListPageState extends State<VehicleListPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Vehículos',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () async {

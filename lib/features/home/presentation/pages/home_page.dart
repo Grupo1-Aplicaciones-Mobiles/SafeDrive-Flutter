@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:safedrive/features/home/data/tip_model.dart';
 import 'package:safedrive/features/home/data/tip_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:safedrive/feature/register_and_login/data/remote/user_service.dart';
+import 'package:safedrive/features/vehicle/data/remote/vehicle_service.dart';
+import 'package:safedrive/features/vehicle/data/remote/vehicle_model.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,8 +16,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
-  int _selectedIndex = 0;
   List<TipAuto> tips = [];
+  List<VehicleModel> _vehicles = [];
+  String? _username;
 
   final LatLng _center =
       const LatLng(37.7749, -122.4194); // Coordenadas de San Francisco
@@ -22,6 +27,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     fetchTipsData();
+    _loadUserData();
+    _loadVehicles();
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -39,12 +46,34 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await getUserData();
+      setState(() {
+        _username = userData['username'];
+      });
+    } catch (e) {
+      print('Error al cargar los datos del usuario: $e');
+    }
+  }
+
+  Future<void> _loadVehicles() async {
+    try {
+      final vehicles = await VehicleService().getVehicles();
+      setState(() {
+        _vehicles = vehicles;
+      });
+    } catch (e) {
+      print('Error al cargar los vehículos: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0, // Ocultar la barra de app
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.deepPurple,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -62,12 +91,13 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Bienvenido de nuevo',
+                        'Bienvenido(a) de nuevo',
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '{Name}', // Reemplaza con el nombre del usuario
+                        _username ??
+                            'Cargando...', // Muestra el nombre del usuario
                         style: TextStyle(fontSize: 20, color: Colors.grey),
                       ),
                     ],
@@ -108,26 +138,17 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              height: 110,
+              height: 120,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
-              child: ListView(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name:
-                          'McLaren Angga'), // Reemplaza con la ruta de tu imagen
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name: 'BMW Mayuko'),
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name: 'BMW Mayuko'),
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name: 'BMW Mayuko'),
-                ],
+                itemCount: _vehicles.length,
+                itemBuilder: (context, index) {
+                  final vehicle = _vehicles[index];
+                  return VehicleCard(
+                      image: vehicle.imageUri, name: vehicle.marca);
+                },
               ),
             ),
             // Sección de Noticias y Tips
@@ -205,7 +226,7 @@ class VehicleCard extends StatelessWidget {
       margin: EdgeInsets.only(right: 16),
       child: Column(
         children: [
-          Image.asset(image,
+          Image.network(image,
               height: 80,
               fit: BoxFit.cover), // Reemplaza con la ruta de tu imagen
           SizedBox(height: 8),
