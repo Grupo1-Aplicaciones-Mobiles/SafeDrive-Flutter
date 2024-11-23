@@ -2,6 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:safedrive/features/home/data/tip_model.dart';
+import 'package:safedrive/features/home/data/tip_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:safedrive/feature/register_and_login/data/remote/user_service.dart';
+import 'package:safedrive/features/vehicle/data/remote/vehicle_service.dart';
+import 'package:safedrive/features/vehicle/data/remote/vehicle_model.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,13 +17,59 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
-  int _selectedIndex = 0;
+
+  List<TipAuto> tips = [];
+  List<VehicleModel> _vehicles = [];
+  String? _username;
 
   final LatLng _center =
       const LatLng(37.7749, -122.4194); // Coordenadas de San Francisco
 
+  @override
+  void initState() {
+    super.initState();
+    fetchTipsData();
+    _loadUserData();
+    _loadVehicles();
+  }
+
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+
+  Future<void> fetchTipsData() async {
+    try {
+      List<TipAuto> fetchedTips = await fetchTips();
+      setState(() {
+        tips = fetchedTips;
+      });
+    } catch (e) {
+      print('Error fetching tips: $e');
+    }
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await getUserData();
+      setState(() {
+        _username = userData['username'];
+      });
+    } catch (e) {
+      print('Error al cargar los datos del usuario: $e');
+    }
+  }
+
+  Future<void> _loadVehicles() async {
+    try {
+      final vehicles = await VehicleService().getVehicles();
+      setState(() {
+        _vehicles = vehicles;
+      });
+    } catch (e) {
+      print('Error al cargar los vehículos: $e');
+    }
   }
 
   @override
@@ -24,7 +77,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0, // Ocultar la barra de app
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.deepPurple,
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -42,12 +96,14 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Bienvenido de nuevo',
+                        'Bienvenido(a) de nuevo',
+
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '{Name}', // Reemplaza con el nombre del usuario
+                        _username ??
+                            'Cargando...', // Muestra el nombre del usuario
                         style: TextStyle(fontSize: 20, color: Colors.grey),
                       ),
                     ],
@@ -87,29 +143,21 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Container(
-              height: 110,
+            Container
+              height: 120,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
-              child: ListView(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name:
-                          'McLaren Angga'), // Reemplaza con la ruta de tu imagen
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name: 'BMW Mayuko'),
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name: 'BMW Mayuko'),
-                  VehicleCard(
-                      image: 'assets/img/SafeDrive_Logo.png',
-                      name: 'BMW Mayuko'),
-                ],
+                itemCount: _vehicles.length,
+                itemBuilder: (context, index) {
+                  final vehicle = _vehicles[index];
+                  return VehicleCard(
+                      image: vehicle.imageUri, name: vehicle.marca);
+                },
               ),
             ),
+            // Sección de Noticias y Tips
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
@@ -128,36 +176,40 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
+              height: 200,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/img/SafeDrive_Logo.png', // Reemplaza con la ruta de tu imagen de icono
-                        height: 115,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Loreme Ipsum Dolor Sit Amet Consectetur  Elit Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua Loreme Ipsum Dolor Sit Amet Consectetur  Elit Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua',
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.justify,
-                            )
-                          ],
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: tips.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width - 32,
+                    margin: EdgeInsets.only(right: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Image.network(
+                            tips[index].imagen,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(width: 8),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            tips[index].contenido,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -180,7 +232,7 @@ class VehicleCard extends StatelessWidget {
       margin: EdgeInsets.only(right: 16),
       child: Column(
         children: [
-          Image.asset(image,
+          Image.network(image,
               height: 80,
               fit: BoxFit.cover), // Reemplaza con la ruta de tu imagen
           SizedBox(height: 8),
@@ -190,4 +242,32 @@ class VehicleCard extends StatelessWidget {
       ),
     );
   }
+
 }
+}
+
+class TipCard extends StatelessWidget {
+  final String image;
+  final String content;
+
+  TipCard({required this.image, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250,
+      margin: EdgeInsets.only(right: 16),
+      child: Column(
+        children: [
+          Image.network(image,
+              height: 100,
+              fit: BoxFit.cover), // Reemplaza con la ruta de tu imagen
+          SizedBox(height: 8),
+          Text(content,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.justify),
+        ],
+      ),
+    );
+  }
+

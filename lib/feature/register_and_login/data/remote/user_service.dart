@@ -8,6 +8,12 @@ final Uri signUpUrl = Uri.parse(
 final Uri signInUrl = Uri.parse(
     'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/authentication/sign-in');
 
+final Uri updateUserDetailsUrl = Uri.parse(
+    'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/users/update/details');
+
+final Uri updateUserImageUrl = Uri.parse(
+    'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/users/update/image');
+
 Future<String> registerUser(
     String name, String username, String password, String phoneNumber) async {
   final requestData = {
@@ -70,7 +76,10 @@ Future<String> loginUser(
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwt_token', token);
+
       await prefs.setInt('userId', userId);
+      await prefs.setString('user_id', userId.toString());
+
 
       Navigator.pushReplacementNamed(context, '/home');
 
@@ -84,6 +93,110 @@ Future<String> loginUser(
   } catch (e) {
     print('Error de conexión: $e');
     return "Error de conexión: $e";
+  }
+}
+
+Future<String> updateUserDetails(
+    String userId, String name, String username, String phoneNumber) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('jwt_token');
+
+  if (token == null) {
+    return "Token no encontrado. Por favor, inicia sesión.";
+  }
+
+  final requestData = {
+    'userId': userId,
+    'name': name,
+    'username': username,
+    'phoneNumber': phoneNumber,
+  };
+
+  final headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer $token",
+  };
+
+  try {
+    final response = await http.put(
+      updateUserDetailsUrl,
+      headers: headers,
+      body: json.encode(requestData),
+    );
+
+    if (response.statusCode == 200) {
+      return "Datos actualizados exitosamente.";
+    } else {
+      print('Error al actualizar datos: ${requestData}');
+      return "Error al actualizar datos: ${response.body}";
+    }
+  } catch (e) {
+    return "Error de conexión: $e";
+  }
+}
+
+Future<String> updateUserImage(String userId, String imageUrl) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('jwt_token');
+
+  if (token == null) {
+    return "Token no encontrado. Por favor, inicia sesión.";
+  }
+
+  final requestData = {
+    'userId': userId,
+    'imageUrl': imageUrl,
+  };
+
+  final headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer $token",
+  };
+
+  try {
+    final response = await http.put(
+      updateUserImageUrl,
+      headers: headers,
+      body: json.encode(requestData),
+    );
+
+    if (response.statusCode == 200) {
+      return "Imagen actualizada exitosamente.";
+    } else {
+      return "Error al actualizar imagen: ${response.body}";
+    }
+  } catch (e) {
+    return "Error de conexión: $e";
+  }
+}
+
+Future<Map<String, String>> getUserData() async {
+  final prefs = await SharedPreferences.getInstance();
+  final userId = prefs.getString('user_id');
+  final token = prefs.getString('jwt_token');
+
+  if (userId == null || token == null) {
+    throw Exception('User ID or token not found');
+  }
+
+  final url = Uri.parse(
+      'https://safedrive-service-a94843fe8d53.herokuapp.com/api/v1/users/$userId');
+  final response = await http.get(
+    url,
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return {
+      'username': data['username'],
+      'phoneNumber': data['phoneNumber'],
+    };
+  } else {
+    throw Exception('Failed to load user data');
   }
 }
 

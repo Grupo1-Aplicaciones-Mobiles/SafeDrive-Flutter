@@ -170,6 +170,8 @@ class _TrackingPageState extends State<TrackingPage> {
               title: "${vehicle.marca} ${vehicle.modelo}",
               snippet: "Placa: ${vehicle.placa}",
             ),
+
+
           ),
         );
       });
@@ -183,6 +185,7 @@ class _TrackingPageState extends State<TrackingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rastrear'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Column(
         children: [
@@ -190,7 +193,8 @@ class _TrackingPageState extends State<TrackingPage> {
             child: GoogleMap(
               onMapCreated: (controller) => mapController = controller,
               initialCameraPosition: CameraPosition(
-                target: userLocation ?? LatLng(0, 0),
+
+                target: userLocation ?? LatLng(0, 0)
                 zoom: 15,
               ),
               markers: markers,
@@ -201,14 +205,17 @@ class _TrackingPageState extends State<TrackingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Text('Selecciona un vehículo:', style: TextStyle(fontWeight: FontWeight.bold)),
+
                 DropdownButton<VehicleModel>(
                   value: selectedVehicle,
                   hint: Text('Selecciona vehículo'),
                   onChanged: (VehicleModel? newValue) {
                     if (newValue != null) onVehicleSelected(newValue);
                   },
-                  items: vehicles.map<DropdownMenuItem<VehicleModel>>((VehicleModel vehicle) {
+                  items: vehicles.map<DropdownMenuItem<VehicleModel>>(
+                      (VehicleModel vehicle) {
                     return DropdownMenuItem<VehicleModel>(
                       value: vehicle,
                       child: Text('${vehicle.marca} - ${vehicle.modelo}'),
@@ -216,6 +223,7 @@ class _TrackingPageState extends State<TrackingPage> {
                   }).toList(),
                 ),
                 SizedBox(height: 10),
+
                 Text("Ubicación:", style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(vehicleLocation != null
                     ? "Lat: ${vehicleLocation!.latitude.toStringAsFixed(6)}, Lon: ${vehicleLocation!.longitude.toStringAsFixed(6)}"
@@ -225,6 +233,7 @@ class _TrackingPageState extends State<TrackingPage> {
                 Text(trackingMessage.isNotEmpty
                     ? trackingMessage
                     : "Seleccione un vehículo para ver los detalles"),
+
               ],
             ),
           ),

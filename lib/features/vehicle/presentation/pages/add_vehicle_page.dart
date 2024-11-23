@@ -23,8 +23,6 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
 
-
-
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -57,20 +55,15 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         imageUrl = await _uploadImage(_image!);
       }
 
-      final double latitude = double.tryParse(_latitudeController.text) ?? 0.0;
-      final double longitude = double.tryParse(_longitudeController.text) ?? 0.0;
-
-
       if (imageUrl != null) {
         VehicleModel newVehicle = VehicleModel(
-          marca: _marcaController.text,
-          modelo: _modeloController.text,
-          placa: _placaController.text,
-          color: _colorController.text,
-          imageUri: imageUrl,
-          latitude: latitude,
-          longitude: longitude,
-        );
+            marca: _marcaController.text,
+            modelo: _modeloController.text,
+            placa: _placaController.text,
+            color: _colorController.text,
+            imageUri: imageUrl,
+            latitude: 0,
+            longitude: 0);
 
         bool success = await VehicleService().postVehicle(newVehicle);
 
@@ -78,8 +71,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Vehículo agregado')),
           );
-          Navigator.pop(context,
-              true); 
+          Navigator.pop(context, true);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error al agregar vehículo')),
@@ -107,6 +99,10 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Añadir vehículos'),
+        backgroundColor: Colors.deepPurple,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -116,25 +112,6 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Text(
-                        'Agregar Vehículo',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                          width:
-                              48), // Espacio para alinear el título en el centro
-                    ],
-                  ),
                   SizedBox(height: 16),
                   TextFormField(
                     controller: _marcaController,
