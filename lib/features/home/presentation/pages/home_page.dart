@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Container
+            Container(
               height: 120,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
@@ -244,7 +244,6 @@ class VehicleCard extends StatelessWidget {
   }
 
 }
-}
 
 class TipCard extends StatelessWidget {
   final String image;
@@ -271,3 +270,4 @@ class TipCard extends StatelessWidget {
     );
   }
 
+}

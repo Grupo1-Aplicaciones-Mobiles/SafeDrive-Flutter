@@ -31,62 +31,56 @@ class _VehicleListPageState extends State<VehicleListPage> {
     _loadData();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vehículos'),
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddVehiclePage(),
-                        ),
-                      );
-                      if (result == true) {
-                        _loadData(); // Recarga los datos si se agregó un vehículo
-                      }
-                    },
-                  ),
-                ],
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Vehículos'),
+      backgroundColor: Colors.deepPurple,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddVehiclePage(),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _vehicles.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VehicleDetailPage(
-                            vehicleModel: _vehicles[index],
-                          ),
-                        ),
-                      );
-                    },
-                    child: VehicleListItem(vehicleModel: _vehicles[index]),
-                  );
-                },
-              ),
-            ),
-          ],
+            );
+            if (result == true) {
+              _loadData(); // Recarga los datos si se agregó un vehículo
+            }
+          },
         ),
+      ],
+    ),
+    body: SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _vehicles.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VehicleDetailPage(
+                          vehicleModel: _vehicles[index],
+                        ),
+                      ),
+                    );
+                  },
+                  child: VehicleListItem(vehicleModel: _vehicles[index]),
+                );
+              },
+            ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

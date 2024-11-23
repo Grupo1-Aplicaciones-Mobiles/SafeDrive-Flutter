@@ -194,7 +194,7 @@ class _TrackingPageState extends State<TrackingPage> {
               onMapCreated: (controller) => mapController = controller,
               initialCameraPosition: CameraPosition(
 
-                target: userLocation ?? LatLng(0, 0)
+                target: userLocation ?? LatLng(0, 0),
                 zoom: 15,
               ),
               markers: markers,
