@@ -32,14 +32,13 @@ class VehicleModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> data = {
       'marca': marca,
       'modelo': modelo,
       'color': color,
       'placa': placa,
-      'latitude': latitude,
-      'longitude': longitude,
       'imageUri': imageUri,
     };
+    return data;
   }
 }
