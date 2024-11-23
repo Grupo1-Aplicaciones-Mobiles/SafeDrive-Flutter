@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets/profile_avatar.dart';
-import '../widgets/custom_bottom_navigation_bar.dart';
 
 class EditProfilePage extends StatelessWidget {
+  const EditProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,13 +48,12 @@ class EditProfilePage extends StatelessWidget {
                   backgroundColor: Colors.deepPurple,
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                child: Text('Guardar'),
+                child: const Text('Guardar', style: TextStyle(color: Colors.black),),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(), // Usando el widget de la barra de navegación
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/profile_avatar.dart';
-import '../widgets/custom_bottom_navigation_bar.dart';
 import 'edit_profile_page.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,12 +53,12 @@ class ProfilePage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurple,
               ),
-              child: Text('Actualizar Información'),
+              child: const Text('Actualizar Información', style: TextStyle(color: Colors.black),),
             ),
             SizedBox(height: 8),
             OutlinedButton(
               onPressed: () {
-                // Logica para cerrar sesión
+                Navigator.pushReplacementNamed(context, '/login');
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.deepPurple,
@@ -67,7 +68,7 @@ class ProfilePage extends StatelessWidget {
             SizedBox(height: 8),
             OutlinedButton(
               onPressed: () {
-                // Logica para borrar cuenta
+                Navigator.pushReplacementNamed(context, '/login');
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.red,
@@ -77,7 +78,6 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(), // Usando el widget de la barra de navegación
     );
   }
 }
