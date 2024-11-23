@@ -16,6 +16,8 @@ class _NotificationListPageState extends State<NotificationListPage> {
   Future<void> _loadData() async {
     List<NotificationModel> notifications = await NotificationService().getNotifications();
     setState(() {
+      // Ordenar las notificaciones por fecha
+      notifications.sort((a, b) => b.dateTime.compareTo(a.dateTime));
       _notifications = notifications;
     });
   }
@@ -33,20 +35,28 @@ class _NotificationListPageState extends State<NotificationListPage> {
         title: const Text('Avisos y Notificaciones:'),
         centerTitle: true,
       ),
-      body: _notifications.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _notifications.length,
+      body: FutureBuilder<List<NotificationModel>>(
+        future: NotificationService().getNotifications(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+            return const Center(child: Text('No hay notificaciones.'));
+          } else if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return NotificationListItem(
-                  notificationModel: _notifications[index],
+                  notificationModel: snapshot.data![index],
                 );
               },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.red,
-        child: const Icon(Icons.close),
+            );
+          } else {
+            return const Center(child: Text('Algo salió mal.'));
+          }
+        },
       ),
     );
   }

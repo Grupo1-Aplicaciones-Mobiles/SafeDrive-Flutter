@@ -26,7 +26,6 @@ Future<String> registerUser(
 
   final headers = {"Content-Type": "application/json"};
 
-  // Imprimir los datos que se enviarán al servidor
   print('Datos de registro: ${json.encode(requestData)}');
   print('Encabezados: $headers');
   print('URL de registro: $signUpUrl');
@@ -77,16 +76,22 @@ Future<String> loginUser(
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwt_token', token);
+
+      await prefs.setInt('userId', userId);
       await prefs.setString('user_id', userId.toString());
+
 
       Navigator.pushReplacementNamed(context, '/home');
 
-      print('Response body: ${response.body}');
+      print('Token: $token');
+      print('UserId: $userId');
       return "Inicio de sesión exitoso.";
     } else {
+      print('Error al iniciar sesión: ${response.body}');
       return "Error al iniciar sesión: ${response.body}";
     }
   } catch (e) {
+    print('Error de conexión: $e');
     return "Error de conexión: $e";
   }
 }

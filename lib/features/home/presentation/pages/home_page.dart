@@ -9,6 +9,7 @@ import 'package:safedrive/feature/register_and_login/data/remote/user_service.da
 import 'package:safedrive/features/vehicle/data/remote/vehicle_service.dart';
 import 'package:safedrive/features/vehicle/data/remote/vehicle_model.dart';
 
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
+
   List<TipAuto> tips = [];
   List<VehicleModel> _vehicles = [];
   String? _username;
@@ -31,9 +33,11 @@ class _HomePageState extends State<HomePage> {
     _loadVehicles();
   }
 
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
+
 
   Future<void> fetchTipsData() async {
     try {
@@ -74,6 +78,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         toolbarHeight: 0, // Ocultar la barra de app
         backgroundColor: Colors.deepPurple,
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -92,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         'Bienvenido(a) de nuevo',
+
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
@@ -137,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Container(
+            Container
               height: 120,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
@@ -236,6 +242,8 @@ class VehicleCard extends StatelessWidget {
       ),
     );
   }
+
+}
 }
 
 class TipCard extends StatelessWidget {
@@ -262,4 +270,4 @@ class TipCard extends StatelessWidget {
       ),
     );
   }
-}
+
