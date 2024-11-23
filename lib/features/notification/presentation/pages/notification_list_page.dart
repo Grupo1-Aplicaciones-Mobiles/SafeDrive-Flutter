@@ -14,9 +14,10 @@ class _NotificationListPageState extends State<NotificationListPage> {
   List<NotificationModel> _notifications = [];
 
   Future<void> _loadData() async {
-    List<NotificationModel> notifications =
-        await NotificationService().getNotifications();
+    List<NotificationModel> notifications = await NotificationService().getNotifications();
     setState(() {
+      // Ordenar las notificaciones por fecha
+      notifications.sort((a, b) => b.dateTime.compareTo(a.dateTime));
       _notifications = notifications;
     });
   }
