@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:safedrive/features/home/data/tip_model.dart';
+import 'package:safedrive/features/home/data/tip_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,12 +13,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
   int _selectedIndex = 0;
+  List<TipAuto> tips = [];
 
   final LatLng _center =
       const LatLng(37.7749, -122.4194); // Coordenadas de San Francisco
 
+  @override
+  void initState() {
+    super.initState();
+    fetchTipsData();
+  }
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  Future<void> fetchTipsData() async {
+    try {
+      List<TipAuto> fetchedTips = await fetchTips();
+      setState(() {
+        tips = fetchedTips;
+      });
+    } catch (e) {
+      print('Error fetching tips: $e');
+    }
   }
 
   @override
@@ -110,6 +130,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            // Sección de Noticias y Tips
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
@@ -128,36 +149,40 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
+              height: 200,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/img/SafeDrive_Logo.png', // Reemplaza con la ruta de tu imagen de icono
-                        height: 115,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Loreme Ipsum Dolor Sit Amet Consectetur  Elit Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua Loreme Ipsum Dolor Sit Amet Consectetur  Elit Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua',
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.justify,
-                            )
-                          ],
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: tips.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width - 32,
+                    margin: EdgeInsets.only(right: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Image.network(
+                            tips[index].imagen,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(width: 8),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            tips[index].contenido,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -186,6 +211,32 @@ class VehicleCard extends StatelessWidget {
           SizedBox(height: 8),
           Text(name,
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+}
+
+class TipCard extends StatelessWidget {
+  final String image;
+  final String content;
+
+  TipCard({required this.image, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250,
+      margin: EdgeInsets.only(right: 16),
+      child: Column(
+        children: [
+          Image.network(image,
+              height: 100,
+              fit: BoxFit.cover), // Reemplaza con la ruta de tu imagen
+          SizedBox(height: 8),
+          Text(content,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.justify),
         ],
       ),
     );

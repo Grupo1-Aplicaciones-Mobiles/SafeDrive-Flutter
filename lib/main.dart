@@ -36,8 +36,7 @@ class MainApp extends StatelessWidget {
         '/notifications': (context) => const NotificationListPage(),
         '/profile': (context) => const ProfilePage(),
         '/edit_profile': (context) => const EditProfilePage(),
-        '/home': (context) =>
-            const SafeDriveApp(), // Ruta para la barra de navegación
+        '/home': (context) => const SafeDriveApp(), // Ruta para la barra de navegación
       },
     );
   }
